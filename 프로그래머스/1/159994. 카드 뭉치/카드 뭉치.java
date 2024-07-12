@@ -1,28 +1,17 @@
-import java.util.LinkedList;
-import java.util.Queue;
-
 class Solution {
     public String solution(String[] cards1, String[] cards2, String[] goal) {
-        Queue<String> queue1 = new LinkedList<>();
-        Queue<String> queue2 = new LinkedList<>();
-        
-        for (String card : cards1) {
-            queue1.offer(card);
-        }
-        for (String card : cards2) {
-            queue2.offer(card);
-        }
-        
+        int pointer1 = 0, pointer2 = 0;
+        int len1 = cards1.length, len2 = cards2.length;
+
         for (String word : goal) {
-            if (!queue1.isEmpty() && queue1.peek().equals(word)) {
-                queue1.poll();
-            } else if (!queue2.isEmpty() && queue2.peek().equals(word)) {
-                queue2.poll();
+            if (pointer1 < len1 && cards1[pointer1].equals(word)) {
+                pointer1++;
+            } else if (pointer2 < len2 && cards2[pointer2].equals(word)) {
+                pointer2++;
             } else {
                 return "No";
             }
         }
-        
         return "Yes";
     }
 }
