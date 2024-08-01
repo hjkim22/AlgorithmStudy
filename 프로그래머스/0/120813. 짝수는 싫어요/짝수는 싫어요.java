@@ -1,20 +1,12 @@
-import java.util.ArrayList;
-
 class Solution {
     public int[] solution(int n) {
-        ArrayList<Integer> list = new ArrayList<>();
+        int oddCnt = (n + 1) / 2;
+        int[] answer = new int[oddCnt];
         
-        for (int i = 1; i <= n; i++) {
-            if (i % 2 != 0) {
-                list.add(i);
-            }
+        int idx = 0;
+        for (int i = 1; i <= n; i += 2) {
+            answer[idx++] = i;
         }
-        
-        int[] answer = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            answer[i] = list.get(i);
-        }
-        
         return answer;
     }
 }
