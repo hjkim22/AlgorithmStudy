@@ -1,34 +1,33 @@
-import java.util.HashMap;
+import java.util.*;
 
-public class Solution {
+class Solution {
     public int solution(String[] want, int[] number, String[] discount) {
-        HashMap<String, Integer> wantMap = new HashMap<>();
-        for (int i = 0; i < want.length; i++) {
-            wantMap.put(want[i], number[i]);
-        }
+        int answer = 0;
+        Map <String, Integer> map = new HashMap<>();
+            for(String w : want)
+                map.put(w, 0);
         
-        int count = 0;
-        
-        for (int i = 0; i <= discount.length - 10; i++) {
-            HashMap<String, Integer> discountMap = new HashMap<>();
-            
-            for (int j = i; j < i + 10; j++) {
-                discountMap.put(discount[j], discountMap.getOrDefault(discount[j], 0) + 1);
+        for(int i = 0; i <= discount.length - 10; i++) {
+            Map <String, Integer> temp = new HashMap<>();
+            temp.putAll(map);
+            boolean flag = true;
+            for(int j = i; j < i + 10; j++) {
+                if(!temp.containsKey(discount[j])) {
+                    flag = false;
+                    break;
+                }
+                temp.put(discount[j], temp.get(discount[j]) + 1);
             }
-            
-            boolean isMatch = true;
-            for (String key : wantMap.keySet()) {
-                if (discountMap.getOrDefault(key, 0) < wantMap.get(key)) {
-                    isMatch = false;
+            if(!flag) continue;
+
+            for(int j = 0; j < want.length; j++) {
+                if(temp.get(want[j]) < number[j]) {
+                    flag = false;
                     break;
                 }
             }
-            
-            if (isMatch) {
-                count++;
-            }
+            if(flag) answer++;
         }
-        
-        return count;
+        return answer;
     }
 }
