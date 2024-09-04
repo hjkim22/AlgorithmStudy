@@ -1,20 +1,18 @@
-import java.util.Arrays;
+import java.util.*;
 
-public class Solution {
+class Solution {
     public int solution(int[] people, int limit) {
+        int answer = 0;
         Arrays.sort(people);
-        int i = 0;
-        int j = people.length - 1;
-        int boats = 0;
-
-        while (i <= j) {
-            if (people[i] + people[j] <= limit) {
-                i++;
+        
+        int idx=0;
+        for(int i=people.length-1;i>=idx;i--){
+            if(people[i]+people[idx]<=limit){
+                answer++;
+                idx++;
             }
-            j--;
-            boats++;
+            else answer++;
         }
-
-        return boats;
+        return answer;
     }
 }
