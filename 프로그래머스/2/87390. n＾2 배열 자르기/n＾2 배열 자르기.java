@@ -1,16 +1,17 @@
 import java.util.*;
-
-public class Solution {
-    public int[] solution(int n, long left, long right) {
-        int length = (int) (right - left + 1);
-        int[] result = new int[length];
-        
-        for (long idx = left; idx <= right; idx++) {
-            int row = (int) (idx / n);
-            int col = (int) (idx % n);
-            result[(int) (idx - left)] = Math.max(row, col) + 1;
+class Solution {
+    public List<Long> solution(int n, long left, long right) {
+        List <Long> list = new ArrayList<>();
+        long cnt = left / n * n;
+        for(long i = left / n; i < n; i++) {
+            if(cnt > right) break;
+            for(long j = 0; j < n; j++) {
+                if(cnt > right) break;
+                if(cnt >= left)
+                    list.add(Math.max(i, j) + 1);
+                cnt++;
+            }
         }
-        
-        return result;
+        return list;
     }
 }
