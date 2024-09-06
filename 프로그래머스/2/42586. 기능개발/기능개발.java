@@ -1,30 +1,60 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class Solution {
-    public int[] solution(int[] progresses, int[] speeds) {
-        int n = progresses.length;
-        int[] daysToComplete = new int[n];
-        
-        for (int i = 0; i < n; i++) {
-            int remainingWork = 100 - progresses[i];
-            daysToComplete[i] = (int) Math.ceil((double) remainingWork / speeds[i]);
-        }
 
-        List<Integer> result = new ArrayList<>();
-        int currentDeployDay = daysToComplete[0];
-        int count = 1;
+	public static void main(String[] args) {
+		Solution sol = new Solution();
 
-        for (int i = 1; i < n; i++) {
-            if (daysToComplete[i] <= currentDeployDay) {
-                count++;
-            } else {
-                result.add(count);
-                count = 1;
-                currentDeployDay = daysToComplete[i];
-            }
-        }
-        result.add(count);
+		int[] progresses = {95, 90, 99, 99, 80, 99};
+		int[] speeds = {1, 1, 1, 1, 1, 1};
 
-        return result.stream().mapToInt(i -> i).toArray();
-    }
+		sol.solution(progresses, speeds);
+	}
+
+	public int[] solution(int[] progresses, int[] speeds) {
+		Queue<Integer> worktime = new LinkedList<Integer>();
+
+		for (int i = 0; i < progresses.length; i++) {
+			int time = (100 - progresses[i]) / speeds[i];
+
+			if ((100 - progresses[i]) % speeds[i] != 0) {
+				time++;
+			}
+			worktime.add(time);
+		}
+
+		List<Integer> result = calcNextWork(worktime);
+
+		int[] answer = result.stream().mapToInt(i->i).toArray();
+		
+		return answer;
+	}
+	
+	public List<Integer> calcNextWork(Queue<Integer> worktime) {
+		List<Integer> result = new ArrayList<Integer>();
+
+		int prevWork = worktime.poll();
+		int cnt = 1;
+
+		while (!worktime.isEmpty()) {
+			int nextWork = worktime.peek();
+
+			if (prevWork < nextWork) {
+				result.add(cnt);
+				cnt = 1;
+
+				prevWork = worktime.poll();
+
+			} else {
+				worktime.poll();
+				cnt++;
+			}
+		}
+		result.add(cnt);
+		
+		return result;
+	}
 }
