@@ -1,32 +1,24 @@
 import java.util.*;
 
-public class Solution {
-    public int[] solution(String s) {
-        s = s.substring(2, s.length() - 2);
-        String[] sets = s.split("\\},\\{");
-        
-        List<Set<Integer>> list = new ArrayList<>();
-        for (String set : sets) {
-            String[] elements = set.split(",");
-            Set<Integer> tempSet = new HashSet<>();
-            for (String element : elements) {
-                tempSet.add(Integer.parseInt(element));
-            }
-            list.add(tempSet);
-        }
 
-        Collections.sort(list, Comparator.comparingInt(Set::size));
+class Solution {
+    public ArrayList<Integer> solution(String s) {
+		ArrayList<Integer> answer = new ArrayList<>();
+		String str[] = s.substring(2, s.length() - 2).replace("},{", "-").split("-");
+		Arrays.sort(str, new Comparator<String>() {
+			public int compare(String o1, String o2) {
 
-        List<Integer> result = new ArrayList<>();
-        Set<Integer> seen = new HashSet<>();
-        for (Set<Integer> set : list) {
-            for (int num : set) {
-                if (seen.add(num)) {
-                    result.add(num);
-                }
-            }
-        }
-
-        return result.stream().mapToInt(i -> i).toArray();
+				return Integer.compare(o1.length(), o2.length());
+			}
+		});
+		for (String x : str) {
+			String[] temp = x.split(",");
+			for (int i = 0; i < temp.length; i++) {
+				int n = Integer.parseInt(temp[i]);
+				if (!answer.contains(n))
+					answer.add(n);
+			}
+		}
+		return answer;
     }
 }
