@@ -1,37 +1,54 @@
 import java.util.*;
 
 class Solution {
-    private int timeToMinutes(String time) {
-        String[] parts = time.split(":");
-        int hours = Integer.parseInt(parts[0]);
-        int minutes = Integer.parseInt(parts[1]);
-        return hours * 60 + minutes;
+    
+    static class Booking {
+        private int start;
+        private int end;
+        
+        public Booking(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
     }
-
+    
     public int solution(String[][] book_time) {
-        int[][] times = new int[book_time.length][2];
-        for (int i = 0; i < book_time.length; i++) {
-            int start = timeToMinutes(book_time[i][0]);
-            int end = timeToMinutes(book_time[i][1]) + 10;
-            times[i][0] = start;
-            times[i][1] = end;
+        PriorityQueue<Booking> pq = new PriorityQueue<>((o1, o2) -> (o1.start - o2.start));
+        
+        for(int i = 0; i < book_time.length; i++) {
+            int start_h = Integer.parseInt(book_time[i][0].split(":")[0]);
+            int start_m = Integer.parseInt(book_time[i][0].split(":")[1]);
+            int end_h = Integer.parseInt(book_time[i][1].split(":")[0]);
+            int end_m = Integer.parseInt(book_time[i][1].split(":")[1]);
+            
+            int start = (start_h * 60) + start_m;
+            int end = (end_h * 60) + end_m;
+            
+            pq.add(new Booking(start, end));
         }
-
-        Arrays.sort(times, Comparator.comparingInt(a -> a[0]));
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int[] time : times) {
-            int start = time[0];
-            int end = time[1];
-
-            if (!pq.isEmpty() && pq.peek() <= start) {
-                pq.poll();
+        
+        List<Integer> end_times = new ArrayList<>();
+        
+        while(!pq.isEmpty()) {
+            Booking b = pq.poll();
+            int start = b.start;
+            int end = b.end;
+            
+            boolean isAvailable = false;
+            Collections.sort(end_times);
+            for(int i = 0; i < end_times.size(); i++) {
+                if(end_times.get(i) + 10 <= start) {
+                    isAvailable = true;
+                    end_times.set(i, end);
+                    break;
+                }
             }
-
-            pq.offer(end);
+            
+            if(!isAvailable) {
+                end_times.add(end);
+            }
         }
-
-        return pq.size();
+        
+        return end_times.size();
     }
 }
