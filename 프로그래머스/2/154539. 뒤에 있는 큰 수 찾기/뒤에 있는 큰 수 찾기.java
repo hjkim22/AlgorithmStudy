@@ -1,27 +1,18 @@
-import java.util.Stack;
+import java.util.*;
 
 class Solution {
     public int[] solution(int[] numbers) {
-        int n = numbers.length;
-        int[] answer = new int[n];
         Stack<Integer> stack = new Stack<>();
+        int[] answer = new int[numbers.length];
 
-        for (int i = 0; i < n; i++) {
-            answer[i] = -1;
-        }
+        Arrays.fill(answer, -1); // 초기값을 -1로 세팅
 
-        for (int i = n - 1; i >= 0; i--) {
-            while (!stack.isEmpty() && stack.peek() <= numbers[i]) {
-                stack.pop();
+        for (int i = 0; i < numbers.length; i++) {
+            while (!stack.isEmpty() && numbers[stack.peek()] < numbers[i]) {
+                answer[stack.pop()] = numbers[i];
             }
-
-            if (!stack.isEmpty()) {
-                answer[i] = stack.peek();
-            }
-
-            stack.push(numbers[i]);
+            stack.push(i);
         }
-
         return answer;
     }
 }
