@@ -1,11 +1,9 @@
 public class Solution {
     public int solution(int n) {
-        int ans = 1;
-		while(n != 1) {
-			if(n % 2 != 0) ans++;
-			n /= 2;
-		}
-        
+        int ans = 0;
+        for(char c : Integer.toBinaryString(n).toCharArray())
+            if(c == '1')
+                ans++;
         return ans;
     }
 }

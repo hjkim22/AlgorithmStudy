@@ -1,10 +1,10 @@
 # [level 2] 점프와 순간 이동 - 12980 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12980) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12980?language=java) 
 
 ### 성능 요약
 
-메모리: 73.6 MB, 시간: 0.03 ms
+메모리: 53.7 MB, 시간: 0.04 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 08월 31일 01:31:41
+2025년 02월 27일 02:01:14
 
 ### 문제 설명
 
