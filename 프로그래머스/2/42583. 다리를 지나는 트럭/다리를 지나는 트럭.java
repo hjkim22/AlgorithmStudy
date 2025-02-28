@@ -9,13 +9,13 @@ class Solution {
     Queue<Integer> time = new LinkedList<>();
  
     for(int i = 0 ;  ; ++answer) {
-        
+      // Out
       if(!time.isEmpty() &&
         answer - time.peek() >= bridge_length) {
         weight_sum -= truck.remove();
         time.remove();
       }
-        
+      // In
       if(i < truck_weights.length &&
         weight_sum + truck_weights[i] <= weight) {
         weight_sum += truck_weights[i];
