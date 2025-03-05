@@ -1,37 +1,19 @@
-import java.util.Arrays;
-
+import java.math.*;
 class Solution {
     public int solution(int n, int k) {
-        String kNumber = Integer.toString(n, k);
-        String[] arr = kNumber.split("0");
         int answer = 0;
-
-        for (String s : arr) {
-            if (s.equals("")) {
-                continue;
-            }
-
-            long num = Long.parseLong(s);
-
-            if (isPrime(num)) {
+        StringBuilder sb = new StringBuilder();
+        while(n > 0) {
+            sb.append(n % k);
+            n /= k;
+        }
+        
+        for(String s : sb.reverse().toString().split("0")) {
+            if(s.isEmpty()) continue;
+            BigInteger num = new BigInteger(s);
+            if(num.isProbablePrime(5))
                 answer++;
-            }
         }
-
         return answer;
-    }
-    
-    private static boolean isPrime(long num) {
-        if (num <= 1) {
-            return false;
-        }
-        
-        for (int i = 2; i <= (int) Math.sqrt(num); i++) {
-            if (num % i == 0) {
-                return false;
-            }
-        }
-        
-        return true;
     }
 }
