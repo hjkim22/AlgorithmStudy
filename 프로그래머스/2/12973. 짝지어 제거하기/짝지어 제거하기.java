@@ -1,20 +1,23 @@
-import java.util.Stack;
+import java.util.*;
 
-class Solution {
-    public int solution(String s) {
-		Stack<Character> stack = new Stack<Character>();
-		for(char ch : s.toCharArray()) {
-			if(stack.isEmpty()) {
-				stack.push(ch);
-			} else {
-				if(stack.peek() == ch) {
-					stack.pop();
-				} else {
-					stack.push(ch);
-				}
-			}
-		}
-		
-		return stack.isEmpty() ? 1 : 0;
+class Solution
+{
+    public int solution(String s)
+    {
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()) {
+            if(stack.isEmpty()) {
+                stack.add(c);
+                continue;
+            }
+            if(stack.peek().equals(c)) {
+                stack.pop();
+                continue;
+            }
+            
+            stack.add(c);
+        }
+
+        return (stack.isEmpty()) ? 1 : 0;
     }
 }
