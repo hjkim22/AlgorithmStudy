@@ -1,5 +1,4 @@
 import java.util.*;
-
 class Solution {
     public List<String> solution(String[] record) {
         List <String> list = new ArrayList<>();
