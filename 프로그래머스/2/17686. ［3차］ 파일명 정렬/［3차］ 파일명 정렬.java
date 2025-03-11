@@ -1,63 +1,35 @@
 import java.util.*;
-
 class Solution {
     public String[] solution(String[] files) {
-        String[] answer = new String[files.length];
-        String[][] answer2 = new String[files.length][3];
-        
-        
-        for(int i = 0; i < files.length; i++){
-            String s = files[i];
-            
-            int startNumberIdx = -1;
-            boolean first = true;
-            int endNumberIdx = -1;
-            int size = 0;
-            
-            for(int j = 0; j < s.length(); j++){
-                if(Character.isDigit(s.charAt(j))){
-                    if(first) {
-                        startNumberIdx = j;
-                        first = false;
-                    }
-                    size++;
-                }else{
-                    if(!first) break;
-                }
+
+        Arrays.sort(files, (o1, o2) -> {
+            String head1 = o1.split("[0-9]")[0].toLowerCase();
+            String head2 = o2.split("[0-9]")[0].toLowerCase();
+            if (head1.compareTo(head2) == 0) {
+                int num1 = getNumber(o1);
+                int num2 = getNumber(o2);
+                return num1 - num2;
             }
-            
-            endNumberIdx = startNumberIdx + size - 1;
-            
-            String head = s.substring(0, startNumberIdx);
-            String number = s.substring(startNumberIdx, endNumberIdx+1);
-            String tail = s.substring(endNumberIdx+1);
-            
-            answer2[i][0] = head;
-            answer2[i][1] = number;
-            answer2[i][2] = tail;            
-        }
-        
-        Arrays.sort(answer2, (o1, o2) -> {
-            if(o1[0].toLowerCase().compareTo(o2[0].toLowerCase(Locale.ROOT)) > 0){
-                return 1;
-            }else if(o1[0].toLowerCase().compareTo(o2[0].toLowerCase(Locale.ROOT)) < 0){
-                return -1;
-            }else{
-                if(Integer.parseInt(o1[1]) > Integer.parseInt(o2[1])){
-                    return 1;
-                }else if(Integer.parseInt(o1[1]) < Integer.parseInt(o2[1])){
-                    return -1;
-                }else{
-                    return 0;
-                }
+            else {
+                return head1.compareTo(head2);
             }
         });
+
+        return files;
+    }
+    public static int getNumber(String str) {
+        char[] arr = str.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        int idx = 0;
         
-        
-        for(int i = 0; i < answer.length; i++){
-            answer[i] = answer2[i][0] + answer2[i][1] + answer2[i][2];
+        while (idx < arr.length && !Character.isDigit(arr[idx])) {
+            idx++;
         }
         
-        return answer;
+        while (idx < arr.length && Character.isDigit(arr[idx])) {
+            sb.append(arr[idx]);
+            idx++;
+        }
+        return Integer.parseInt(sb.toString());
     }
 }
