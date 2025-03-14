@@ -47,7 +47,6 @@ class Solution {
                 return true;
             }
         }
-        //대각선 검사
         if (board[0].charAt(0) == ch
                 && board[1].charAt(1) == ch
                 && board[2].charAt(2) == ch) {
