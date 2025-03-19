@@ -1,35 +1,35 @@
 import java.util.*;
 
 class Solution {
-    static boolean[] visit;
-    static int depth;
-
     public int solution(int[] cards) {
-        int answer = 1;
-        int len = cards.length;
-        visit = new boolean[len+1];
-        List<Integer> list = new ArrayList<>();
-        for(int i=0;i<len;i++) {
-            if(!visit[i+1]) {
-                depth = 1;
-                visit[i+1] = true;
-                open(cards[i], cards);
-                list.add(depth);
+        int N = cards.length;
+        boolean visited[] = new boolean [N];
+        List<Integer>result = new ArrayList<>();
+        for(int i=0;i<N;i++){
+            Queue<Integer>queue = new LinkedList<>();
+            if(!visited[cards[i]-1]){
+                int cnt = 0;
+                queue.add(cards[i]-1);
+                visited[cards[i]-1] = true;
+                while(!queue.isEmpty()){
+                    int now = queue.poll();
+                    cnt++;
+                    int next = cards[now]-1;
+                    if(visited[next]) continue;
+                    queue.add(next);
+                    visited[next]=true;
+                }
+                result.add(cnt);
+                
             }
+            
         }
-        if(list.size()<2) {
-            return 0;
-        }
-        Collections.sort(list, Collections.reverseOrder());
-        answer = list.get(0) * list.get(1);
+        for(int s : result)
+            System.out.println(s);
+        Collections.sort(result,Comparator.reverseOrder());
+        int answer = 0;
+        if(result.size()!=1)
+            answer = result.get(0)*result.get(1);
         return answer;
-    }
-
-    private static void open(int x, int[] cards) {
-        if(!visit[x]) {
-            visit[x] = true;
-            depth += 1;
-            open(cards[x-1], cards);
-        }
     }
 }
