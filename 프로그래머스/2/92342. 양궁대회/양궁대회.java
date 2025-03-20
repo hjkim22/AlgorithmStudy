@@ -1,63 +1,88 @@
 import java.util.*;
 
 class Solution {
-    public static int N, M, max;
-    public static boolean[] isVisited;
-    public static int[] comb;
-    public static int[] ans;
-    
-    
+    private int n;
+    private int[] apeachInfo;
+    private int maxScoreGap = 1;
+    private int[] optLionInfo = {-1};
+
     public int[] solution(int n, int[] info) {
-        input(n, info);
+        this.n = n; 
+        this.apeachInfo = info;
         
-        DFS(0, info);
+        int targetScore = 10;
+        int usedArrows = 0;
+        int[] lionInfo = new int[11];
+        int scoreGap = 0;
         
-        if(max == -1) {
-            return new int[] {-1};
+        for (int i = 0; i < 11; i++) {
+            if (apeachInfo[i] != 0) {
+                scoreGap -= 10 - i;
+            }
         }
         
-        return ans;
+        dfs(targetScore, usedArrows, scoreGap, lionInfo);
+        
+        return optLionInfo;
     }
     
-    public void DFS(int depth, int[] info) {
-        if(depth == N) {
-            int diff = scoreCalc(info);
-            if(max <= diff) {
-                max = diff;
-                ans = comb.clone();
+    private void dfs(int targetScore, int usedArrows, int scoreGap, int[] lionInfo) {         
+        checkOptimalSolution(scoreGap, usedArrows, lionInfo);
+        
+        for (int i = targetScore; i >= 0; i--) {
+            if (usedArrows + apeachInfo[10 - i] + 1 > n) continue;
+            
+            usedArrows += apeachInfo[10 - i] + 1;
+            lionInfo[10 - i] += apeachInfo[10 - i] + 1;
+            if (apeachInfo[10 - i] == 0) {
+                scoreGap += i; 
+            } else {
+                scoreGap += i * 2;
             }
+            
+            dfs(i - 1, usedArrows, scoreGap, lionInfo); 
+            
+            usedArrows -= apeachInfo[10 - i] + 1;
+            lionInfo[10 - i] -= apeachInfo[10 - i] + 1;
+            if (apeachInfo[10 - i] == 0) {
+                scoreGap -= i;
+            } else {
+                scoreGap -= i * 2;
+            }
+        }
+    }
+    
+    private void checkOptimalSolution(int scoreGap, int usedArrows, int[] lionInfo) {
+        if (scoreGap < maxScoreGap) return;
+        
+        int[] temp = lionInfo.clone(); 
+        temp[10] += n - usedArrows;
+
+        if (isAbsoultelyOptimal(scoreGap, optLionInfo)) {
+            maxScoreGap = scoreGap;
+            optLionInfo = temp;
             return;
         }
-        
-        for(int i=0; i<info.length && comb[i] <= info[i]; i++) {
-            comb[i]++;
-            DFS(depth + 1, info);
-            comb[i]--;
+
+        for (int i = 10; i >= 0; i--) {
+            if (temp[i] > optLionInfo[i]) {
+                optLionInfo = temp;
+                break;
+            } else if (temp[i] < optLionInfo[i]) {
+                break;
+            }
         }
-        
-    } 
-    
-    public int scoreCalc(int[] info){
-        int lion = 0;
-        int apeach = 0;
-        
-        for(int i=0; i<M; i++) {
-            if(info[i] == 0 && comb[i] == 0) continue;
-            
-            if(info[i] >= comb[i]) apeach += (10 - i);
-            else lion += (10 - i);
-        }
-        
-        int diff = lion - apeach;
-        if(diff <= 0) return -1;
-        return diff;        
     }
     
-    public void input(int n, int[] info) {
-        N = n;
-        M = info.length;
-        max = Integer.MIN_VALUE;
-        comb = new int[M];
-        ans = new int[M];
+    private boolean isAbsoultelyOptimal(int scoreGap, int[] optLionInfo) {
+        if (scoreGap > maxScoreGap) {
+            return true;
+        }
+        
+        if (optLionInfo.length == 1) {
+            return true;
+        }
+        
+        return false;
     }
 }
