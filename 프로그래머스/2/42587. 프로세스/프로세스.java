@@ -1,25 +1,31 @@
 import java.util.*;
+
 class Solution {
     public int solution(int[] priorities, int location) {
         int answer = 0;
-        int[] rank = priorities.clone();
-        Arrays.sort(rank);
-        Deque <Deque<Integer>> d = new ArrayDeque<>();
-        for(int i = 0; i < priorities.length; i++) {
-            Deque <Integer> temp = new ArrayDeque<>();
-            temp.add(priorities[i]);
-            temp.add(i);
-            d.add(temp);
+        List<Integer> list = new ArrayList<>();
+        for(int x : priorities) {
+            list.add(x);
         }
-        
-        for(int i = rank.length - 1; i >= 0; i--) {
-            while(d.peek().peek() != rank[i])
-                d.addLast(d.remove());
-            if(d.peek().peekLast() == location) {
-                answer = rank.length - i;
-                break;
+        while(location >= 0) {
+            System.out.println(list.get(0));
+            int max = Collections.max(list);
+            if(list.get(0) >= max) {
+                list.remove(0);
+                location--;
+                answer++;
+                if(location < 0) {
+                    break;
+                }
+            } else {
+                int tmp = list.get(0);
+                list.remove(0);
+                list.add(tmp);
+                location--;
+                if(location < 0) {
+                    location = list.size()-1;
+                }
             }
-            d.remove();
         }
         return answer;
     }
