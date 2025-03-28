@@ -1,15 +1,22 @@
-import java.math.BigInteger;
-
-
+import java.util.*;
 class Solution {
+    int max;
     public int solution(int[] arr) {
-		BigInteger a = new BigInteger(String.valueOf(arr[0]));
-
-		for (int i = 1; i < arr.length; i++) {
-			BigInteger b = new BigInteger(String.valueOf(arr[i]));
-			a = a.multiply(b).divide(a.gcd(b));
-		}
-
-		return a.intValue();
+        Arrays.sort(arr);
+        max = arr[arr.length - 1];
+        int weight = 1;
+        while(true){
+            int target = max * weight;
+            if(isOkay(max * weight, arr))
+                return max * weight;
+            weight++;
+        }
+    }
+    public boolean isOkay(int target, int[] arr){
+        for(int value : arr){
+            if(target % value != 0)
+                return false;
+        }
+        return true;
     }
 }
