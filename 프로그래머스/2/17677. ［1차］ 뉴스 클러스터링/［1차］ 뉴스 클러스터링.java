@@ -1,33 +1,44 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
 class Solution {
-    public List<String> stringSplit(String str) {
-        List<String> list = new ArrayList<>();
-        for(int i = 0; i + 2 <= str.length(); i++) {
-            String s = str.substring(i, i + 2).toUpperCase();
-            if(s.matches("[A-Z]+"))
-                list.add(s);
-        }
-        return list;
-    }
-
     public int solution(String str1, String str2) {
-        int answer = 65536;
-        List <String> s1 = stringSplit(str1);
-        List <String> s2 = stringSplit(str2);
-
-        int sum = s1.size() + s2.size();
-        int same = 0;
-        while(!s1.isEmpty() && !s2.isEmpty()) {
-            int index = s2.indexOf(s1.get(0));
-            if(index != -1) {
-                same++;
-                s2.remove(index);
-            }
-            s1.remove(0);
-        }
-
-        if(sum != 0)
-           answer *= (double)same / (sum - same);
+        int answer = 0;
+		str1 = str1.toLowerCase();
+		str2 = str2.toLowerCase();
+		List<String> list1 = new ArrayList<String>();
+		List<String> list2 = new ArrayList<String>();
+		
+		String str = new String();
+		for(int i=0; i<str1.length()-1; i++) {
+			str = str1.substring(i, i+2);
+			if(str.matches("^[a-z]*$")) {
+				list1.add(str);
+			}
+		}
+		for(int i=0; i<str2.length()-1; i++) {
+			str = str2.substring(i, i+2);
+			if(str.matches("^[a-z]*$")) {
+				list2.add(str);
+			}
+		}
+        
+        if(list1.size() == 0 && list2.size() == 0) {
+			answer = 65536;
+		} else {
+			int cnt = 0;
+			for(int i=0; i<list1.size(); i++) {
+				str = list1.get(i);
+				if(list2.contains(str)) {
+					list1.remove(str);
+					list2.remove(str);
+					cnt++;
+					i--;
+				}
+			}
+			
+	        answer = (int) ((double) cnt / (cnt + list1.size() + list2.size()) * 65536);
+		}
         return answer;
     }
 }
