@@ -1,72 +1,49 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int n) {
-        int[] answer;
         int[][] array = new int[n][n];
-        int num = 2;
+        for(int[] row: array){
+            Arrays.fill(row, 0);
+        }
+
+        int length = (((n * n) - n) / 2) + n;
+        char action = 'v'; //v, h, d, 아래, 오른쪽, 왼쪽위 대각
         int x = 0;
-        int y = 0;
-        int direction = 0;
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(array[i], 0);
-        }
-        int max = (n * (n + 1)) / 2;
-        array[0][0] = 1;
-        while (num <= max) {
-            switch (direction % 3) {
-                case 0: {
-                    for (int i = y; i < n; i++) {
-                        y++;
-                        if (y >= n || array[y][x] != 0) {
-                            y--;
-                            break;
-                        } else {
-                            array[y][x] = num;
-                            num++;
-                        }
-                    }
-                    break;
-                }
-                case 1: {
-                    for (int i = x; i < n; i++) {
-                        x++;
-                        if (x >= n || array[y][x] != 0) {
-                            x--;
-                            break;
-                        } else {
-                            array[y][x] = num;
-                            num++;
-                        }
-                    }
-                    break;
-                }
-                case 2: {
-                    for (int i = 0; i < n; i--) {
-                        x--;
-                        y--;
-                        if (x < 0 || y < 0 || array[y][x] != 0) {
-                            x++;
-                            y++;
-                            break;
-                        } else {
-                            array[y][x] = num;
-                            num++;
-                        }
-                    }
-                    break;
+        int y = -1;
+        for(int i = 1; i <= length; i++){
+            if(action == 'v'){
+                y++;
+                if((y + 1 >= n || array[y+1][x] != 0)){
+                    action = 'h';
                 }
             }
-            direction++;
+            else if(action == 'h'){
+                x++;
+                if((x + 1 >= n || array[y][x+1] != 0)){
+                    action = 'd';
+                }
+            }
+            else{
+                x--;
+                y--;
+                if((x - 1 <= 0 || array[y-1][x-1] != 0)){
+                    action = 'v';
+                }
+            }
+            array[y][x] = i;
         }
-        int k = 0;
-        answer = new int[max];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                answer[k] = array[i][j];
-                k++;
+
+        int[] answer = new int[length];
+
+        int index = 0;
+        for(int i = 0; i < array.length; i++) {
+            for (int j = 0; j < i + 1; j++) {
+                answer[index] = array[i][j];
+                index++;
             }
         }
+
+
         return answer;
     }
 }
