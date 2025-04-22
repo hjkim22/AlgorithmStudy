@@ -1,21 +1,28 @@
 class Solution {
     public String solution(String s) {
-        char[] cArr = s.toCharArray();
-        boolean flag = false;
-        for(int i = 0; i < cArr.length; i++) {
-            if(!flag && 97 <= (int)cArr[i] && (int)cArr[i] <= 122) {
-                cArr[i] = (char)((int)cArr[i] - 32);
-            }else if(flag && 65 <= (int)cArr[i] && (int)cArr[i] <= 90) {
-                cArr[i] = (char)((int)cArr[i] + 32);
+        String answer = "";
+        
+        String[] words = s.split(" ");
+        char endCharacter = s.charAt(s.length()-1); // 마지막 글자
+        
+        for(int i=0; i<words.length; i++){
+            for(int j=0; j<words[i].length(); j++){
+                
+                char alpha = words[i].charAt(j);
+                
+                if(j == 0) alpha = Character.toUpperCase(alpha); // 첫 글자는 무조건 대문자
+                else alpha = Character.toLowerCase(alpha); // 그 다음 글자부터는 소문자
+                
+                answer += alpha;
             }
-
-            if(cArr[i] == ' ') {
-                flag = false;
-            }else {
-                flag = true;
-            }
+            
+            answer += ' '; // 단어가 끝날 때마다 공백 추가
         }
-
-        return new String(cArr);
+        
+        if(endCharacter == ' '){
+            return answer;
+        } else{
+            return answer.trim();
+        }
     }
 }
