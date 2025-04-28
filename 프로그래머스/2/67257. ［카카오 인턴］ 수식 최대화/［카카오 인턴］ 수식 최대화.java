@@ -11,6 +11,7 @@ class Solution {
     public long solution(String expression) {
         String num = "";
         
+        //op, num 구분
         for(int i=0; i<expression.length(); i++){
             char c = expression.charAt(i);
             if(c=='*' || c=='+' || c=='-'){
@@ -22,8 +23,10 @@ class Solution {
                 num += c;
             }
         }
+        //마지막 숫자
         numList.add(Long.parseLong(num));
         
+        //순열 만들기
         makePermutation(0);
         
         return answer;
@@ -31,6 +34,7 @@ class Solution {
     
     static void makePermutation(int depth){
         if(depth==op.length){
+            //3개를 선택함 -> 연산
             sol();
             return;
         }
@@ -45,12 +49,14 @@ class Solution {
     }
     
     static void sol(){
+        //list 복사
         ArrayList<String> oper = new ArrayList<String>();
         oper.addAll(opList);
         
         ArrayList<Long> num = new ArrayList<Long>();
         num.addAll(numList);
         
+        //연산자 우선순위에 따라 계산
         for(int i=0; i<perm.length; i++){
             String op = perm[i];
             for(int j=0; j<oper.size(); j++){
@@ -59,6 +65,7 @@ class Solution {
                     long n2 = num.get(j+1);
                     long res = cal(n1, n2, op);
                     
+                    //list 갱신
                     num.remove(j+1);
                     num.remove(j);
                     oper.remove(j);
