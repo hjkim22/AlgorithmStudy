@@ -1,10 +1,11 @@
 import java.util.*;
+
 class Solution {
     boolean[] visited;
     int ans = Integer.MAX_VALUE;
     public int solution(String begin, String target, String[] words) {
         int answer = 0;
-        
+    
         visited = new boolean[words.length];
         if(!Arrays.asList(words).contains(target)){
             return 0;
@@ -46,5 +47,4 @@ class Solution {
         }
         return true;
     }
-
 }
