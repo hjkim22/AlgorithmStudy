@@ -7,7 +7,7 @@ class Solution {
         for(int[] p:puddles){
             int x = p[0];
             int y = p[1];
-            map[y][x] = -1;
+            map[y][x] = -1; //웅덩이
         }
         
         dp[1][1] = 1;
