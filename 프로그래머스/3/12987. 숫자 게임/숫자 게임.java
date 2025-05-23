@@ -14,10 +14,10 @@ class Solution {
         int answer = 0;
         while(!pq.isEmpty()){
             int target = pq.poll();
-            if (target < dq.peekLast()){
+            if(target < dq.peekLast()){
                 dq.pollLast();
                 answer++;
-            } else {
+            }else{
                 dq.pollFirst();
             }
         }
