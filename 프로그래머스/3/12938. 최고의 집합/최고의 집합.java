@@ -1,26 +1,21 @@
+import java.util.*;
+
 class Solution {
     public int[] solution(int n, int s) {
-        int[] answer;
-        
-        if(n > s) {
-            answer = new int[]{-1};
-            return answer;
+        if (n > s) {
+            return new int[]{-1};
         }
-        
-        int init = s / n;
-        int mod = s % n;
-        
-        answer = new int[n];
-        for(int i = 0; i < n; i++) {
-            answer[i] = init;
+
+        int[] answer = new int[n];
+        for (int i = 0; i < n; i++) {
+            answer[i] = s / n;
         }
-        
-        int idx = n - 1;
-        for(int m = 0; m < mod; m++) {
-            answer[idx]++;
-            idx--;
+
+        int remain = s % n;
+        for (int i = n - 1; i >= n - remain; i--) {
+            answer[i] += 1;
         }
-        
+
         return answer;
     }
 }
