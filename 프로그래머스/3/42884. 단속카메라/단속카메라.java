@@ -2,14 +2,21 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] routes) {
-        Arrays.sort(routes, (o1, o2) -> o1[1] - o2[1]);
-        int location = routes[0][1];
-        int answer = 1;
+        int answer = 0;
+        //모든 차량이 한 번은 단속용 카메라를 만나도록 하려면 최소 몇 대의 카메라를 설치해야 하는지를 return
+        //종료지점 오름차순 정렬
+        Arrays.sort(routes, new Comparator<int[]>(){
+            @Override
+            public int compare(int[] r1, int[] r2){
+                return r1[1]-r2[1];
+            }
+        });
         
-        for (int i = 1; i < routes.length; i++) {
-            if (routes[i][0] > location) {
-                answer++;
-                location = routes[i][1];
+        int pos = Integer.MIN_VALUE;
+        for(int[] r:routes){
+            if(pos<r[0]){
+                pos = r[1];
+                answer++; //카메라 설치
             }
         }
         return answer;
